@@ -8,16 +8,29 @@
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head is None or head.next is None:
-            return None
-        else:
-            data = []
-            data.append(head)        
-            listNode = head.next 
-            while listNode.next is not None:
-                # print(listNode.val)
-                if listNode in data:
-                    return listNode
-                data.append(listNode)
-                listNode = listNode.next
-            return None
+        ## Faster iteration using slow/fast pointers
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                slow = head
+                while slow != fast:
+                    slow = slow.next
+                    fast = fast.next
+                return slow
+        return None
+        
+        ## Unoptimized solution
+#         if not head or not head.next:
+#             return None
+#         data = [head]
+#         node = head.next
+#         while node.next != None:
+#             if node in data:
+#                 return node
+#             data.append(node)
+#             node = node.next
+#         return None
+        
+        
